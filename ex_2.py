@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.7
+#!/home/fecke/anaconda3/envs/Lab1_B/bin/python
 
 import sys
 
