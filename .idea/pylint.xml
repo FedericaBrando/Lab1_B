@@ -2,5 +2,6 @@
 <project version="4">
   <component name="PylintConfigService">
     <option name="customPylintPath" value="$USER_HOME$/anaconda3/envs/Lab1_B/bin/pylint" />
+    <option name="scanBeforeCheckin" value="false" />
   </component>
 </project>
