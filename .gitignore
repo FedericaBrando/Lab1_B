@@ -1,2 +1,9 @@
 # Project exclude paths
 /venv/
+
+# Project exclude files:
+val/Test-all_not_kunitz.fasta
+val/Train-all_not_kunitz1.fasta
+val/secondvalidation/Test-all_notPF00014.fasta
+val/secondvalidation/Train-all_notPF00014.fasta
+val/secondvalidation/all_notPF00014.fasta
