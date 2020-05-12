@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="RSettings" path="/usr/bin/R" />
+  <component name="RSettings">
+    <option name="interpreterPath" value="$USER_HOME$/anaconda3/envs/drd/bin/R" />
+  </component>
 </project>

@@ -1,0 +1,32 @@
+345
+Real positives in my testing set 69
+BEST PERFORMANCE ON TESTING - ConfMx
+[[112379      0]
+ [     0     69]]
+Real positives in my testing set 69
+BEST PERFORMANCE ON TESTING - ConfMx
+[[112379      0]
+ [     1     68]]
+Real positives in my testing set 69
+BEST PERFORMANCE ON TESTING - ConfMx
+[[112379      0]
+ [     1     68]]
+Real positives in my testing set 69
+BEST PERFORMANCE ON TESTING - ConfMx
+[[112379      0]
+ [     0     69]]
+Real positives in my testing set 69
+BEST PERFORMANCE ON TESTING - ConfMx
+[[112375      3]
+ [     0     69]]
+True negative	True positive	False positive	False negative	threshold	mcc_score	accuracy_score
+112379		69		0		0		1e-09		1.0		1.0
+112379		68		0		1		1e-09		0.992722759363536		0.9999911070005691
+112379		68		0		1		1e-09		0.992722759363536		0.9999911070005691
+112379		69		0		0		1e-09		1.0		1.0
+112375		69		3		0		1e-07		0.9789319435150285		0.999973320764449
+╒══════════════════╤══════════════════╕
+│   mcc_score mean │   acc_score mean │
+╞══════════════════╪══════════════════╡
+│         0.992875 │         0.999991 │
+╘══════════════════╧══════════════════╛

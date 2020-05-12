@@ -3,7 +3,7 @@
 
 # Project exclude files:
 val/Test-all_not_kunitz.fasta
-val/Train-all_not_kunitz1.fasta
-val/secondvalidation/Test-all_notPF00014.fasta
-val/secondvalidation/Train-all_notPF00014.fasta
-val/secondvalidation/all_notPF00014.fasta
+model_validation/Train-all_not_kunitz1.fasta
+model_validation/datasets_splitted/Test-all_notPF00014.fasta
+model_validation/datasets_splitted/Train-all_notPF00014.fasta
+model_validation/initial_datasets/all_notPF00014.fasta
