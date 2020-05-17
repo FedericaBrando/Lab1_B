@@ -1,17 +1,19 @@
+#!/home/fecke/anaconda3/envs/Lab1_B/bin/python
+
 import pandas as pd
 from pandas import read_csv
 import seaborn as sn
 from matplotlib import pyplot as plt
 from matplotlib.colors import *
-from sklearn.metrics import confusion_matrix, matthews_corrcoef, accuracy_score
+from sklearn.metrics import confusion_matrix, matthews_corrcoef, accuracy_score, auc
 from tabulate import tabulate
-from sklearn.metrics import precision_recall_curve, average_precision_score
+from sklearn.metrics import precision_recall_curve
 from sklearn.model_selection import StratifiedKFold
-from statistics import mean
+from statistics import mean, stdev
 
 
 def get_eval(x):
-    '''Given a panda object it returns a list'''
+    '''Given a pandas object it returns a list'''
     evalues = []
     for i in x:
         evalues.append(i)
@@ -19,7 +21,10 @@ def get_eval(x):
 
 
 def mcc_acc_index(Y_true, x):
-    '''This function takes in input Y_true --> data class and x --> feature. Given a set of thresholds, it evaluates the thresholds and computes the mcc for each y_predicted with a given threshold. It returns the max MCC and max Accuracy, and the best threshold'''
+    '''This function takes in input Y_true --> data class and x --> feature.
+    Given a set of thresholds, it evaluates the thresholds and computes the
+    mcc for each y_predicted with a given threshold. It returns the max MCC
+    and max Accuracy, and the best threshold'''
     ACC_list = []
     MCC_list = []
     th = []
@@ -44,7 +49,9 @@ def mcc_acc_index(Y_true, x):
 
 
 def get_cfmx(threshold, x_true, y_true):
-    '''This function takes in input the threshold, the feature (in this case evalue) and the class. It returns a list of classes predicted with the given threshold and a confusion matrix between the y_true and the predicted'''
+    '''This function takes in input the threshold, the feature (in this case evalue)
+    and the class. It returns a list of classes predicted with the given threshold
+    and a confusion matrix between the y_true and the predicted'''
     y_predict = []
 
     for k in x_true:
@@ -82,19 +89,25 @@ def plot_cm(Y_true, Y_pred, title):
 
 
 def get_PR(yy, xx):
-    '''This function takes in input all data in the form of y-->classes while x--->features, it returns the PR curve plotted and also precision, recall and the thresholds used for the plotting.'''
+    '''This function takes in input all data in the form of y-->classes
+    and x--->features, it returns the PR curve plotted and also precision, r
+    ecall and the thresholds used for the plotting.'''
 
     xx = xx / max(xx)
     yscore = [values for values in xx]
     precision, recall, thresholds = precision_recall_curve(yy,  # pos_label = 0 so th works reverse
                                                            yscore,  # so that whatever is > th is labelled
                                                            pos_label=0)  # as 0 so negative.
-    ap = average_precision_score(yy,
-                                 yscore,
-                                 pos_label=0)
+
+    ap = auc(recall.tolist(), precision)
+    print('Area under PR curve: ', ap)
+
+    sn.set()
+    sn.set_context("paper")
+
     plt.plot(recall,
              precision,
-             color='dark orange',
+             color='orange',
              lw=4,
              label='PR curve'
              )
@@ -109,7 +122,8 @@ def get_PR(yy, xx):
 
 
 def get_scatterplot(x_data, y_data, th_l):
-    '''This function gets in input x_data and y_data that are alla data, y for 'class' type data and x for 'features' type data. the third value is a list of e-value thresholds. '''
+    '''This function gets in input x_data and y_data that are alla data, y for 'class'
+    type data and x for 'features' type data. the third value is a list of e-value thresholds. '''
     data_y = []
     data_x = []
 
@@ -128,18 +142,21 @@ def get_scatterplot(x_data, y_data, th_l):
     # data exploration - how many positives?
     y_data.value_counts()
 
+    sn.set()
+    sn.set_context("paper")
+
     #----data visualization-----
     # countplot
     sn.countplot(x='class',
                  hue='class',
                  dodge=False,
                  data=plot_data,
-                 palette='hls'
+                 palette='hls',
+                 linewidth=0.7
                  )
     plt.yscale('log')
-    plt.ylabel('N. Sequences')
-    plt.title('All data barplot')
-    plt.savefig('../outputs/barplot.png')
+    plt.ylabel('count')
+    plt.savefig('../outputs/domain_barplot.png')
     plt.show()
 
     # scatter plot
@@ -149,13 +166,12 @@ def get_scatterplot(x_data, y_data, th_l):
                                data=plot_data,
                                linewidth=0.7,
                                palette='hls',
-                               jitter=0.3,
+                               jitter=0.15,
                                dodge=False,
-                               alpha=0.7,
                                )
 
     alldataplot.set(yscale='log', ylim=(1e-32, 5))
-    plt.title('Data and thresholds')
+    plt.title('Domain e-value and thresholds')
 
     # adding an horizontal line for each valid threshold found
     prov_th = list(set(th_l))
@@ -165,7 +181,7 @@ def get_scatterplot(x_data, y_data, th_l):
         alldataplot.axhline(th, c=color, label=th_title)
     plt.ylabel('e-value')
     plt.legend(loc='lower right', fontsize='small')
-    plt.savefig('../outputs/all_data_scatterplot.png')
+    plt.savefig('../outputs/Domain_scatterplot.png')
     plt.show()
 
 
@@ -232,7 +248,9 @@ def main(f):
     for i in range(len(th_l)) :
         print(tn_l[i], tp_l[i], fp_l[i], fn_l[i], th_l[i], mcc_l[i], acc_l[i], sep='\t\t')
 
-    print(tabulate([['mcc_score mean', 'acc_score mean'], [mean(mcc_l), mean(acc_l)]], headers='firstrow',
+    print(tabulate([['mcc_score mean', 'mcc_stdev', 'acc_score mean', 'acc_stdev'],
+                    [mean(mcc_l), stdev(mcc_l), mean(acc_l), stdev(acc_l)]],
+                   headers='firstrow',
                    tablefmt='fancy_grid'))
     get_scatterplot(X, y, th_l)
 
